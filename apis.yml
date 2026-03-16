@@ -12,7 +12,7 @@ image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
   - API
 created: '2025-02-12'
-modified: '2025-02-12'
+modified: '2026-03-16'
 url: >-
   https://raw.githubusercontent.com/api-evangelist/songstats/refs/heads/main/apis.yml
 specificationVersion: '0.19'
@@ -24,12 +24,23 @@ apis:
       with powerful music data. All endpoints are streamlined to allow for a
       quick and easy implementation, saving development time and providing
       reliable and fast data. 
-    humanURL: ' https://docs.songstats.com/'
+    humanURL: https://docs.songstats.com/
     tags:
-      - API
+      - Music
+      - Analytics
+      - Streaming
     properties:
       - type: Documentation
-        url: ' https://docs.songstats.com/'
+        url: https://docs.songstats.com/
+      - type: Reference
+        url: https://docs.songstats.com/docs/api/e80265bb8b01b-songstats-api
+common:
+  - type: Portal
+    url: https://songstats.com/for/developers
+  - type: Documentation
+    url: https://docs.songstats.com/
+  - type: Website
+    url: https://songstats.com/
 maintainers:
   - FN: Kin Lane
-    email: info@apievangelist.com
+    email: kin@apievangelist.com

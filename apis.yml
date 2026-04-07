@@ -8,8 +8,7 @@ type: Index
 position: Consumer
 access: 3rd-Party
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-tags:
-  - API
+tags: []
 created: '2025-02-12'
 modified: '2026-03-16'
 url: >-
@@ -25,8 +24,8 @@ apis:
       data.
     humanURL: https://docs.songstats.com/
     tags:
-      - Music
       - Analytics
+      - Music
       - Streaming
     properties:
       - type: Documentation

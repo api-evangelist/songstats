@@ -1,0 +1,25 @@
+{
+  "title": "Songstats Artist Structure",
+  "description": "JSON structure documentation for Songstats artist objects",
+  "structure": {
+    "songstats_artist_id": "string - Songstats internal artist ID",
+    "name": "string - Artist display name",
+    "genres": ["string - Genre name"],
+    "image_url": "string|null - Artist profile image URL",
+    "links": {
+      "spotify": "string - Spotify artist URL",
+      "apple_music": "string - Apple Music artist URL",
+      "deezer": "string - Deezer artist URL",
+      "amazon_music": "string - Amazon Music artist URL",
+      "tidal": "string - Tidal artist URL",
+      "youtube": "string - YouTube channel URL"
+    },
+    "stats": {
+      "source": "string - Platform identifier (spotify|apple_music|deezer|...)",
+      "followers": "integer - Follower count",
+      "monthly_listeners": "integer - Monthly listener count (Spotify)",
+      "playlists_editorial_current": "integer - Current editorial playlist placements",
+      "playlists_editorial_total": "integer - All-time editorial playlist placements"
+    }
+  }
+}

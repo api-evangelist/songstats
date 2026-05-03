@@ -1,0 +1,1274 @@
+openapi: 3.0.3
+info:
+  title: Songstats Enterprise API
+  description: >-
+    The Songstats Enterprise API provides music data analytics for artists, tracks,
+    labels, and collaborators across all major streaming platforms. Endpoints return
+    JSON data including current stats, historic stats, audience details, catalog,
+    activities, and playlist data. Used by music industry professionals to build
+    dashboards, reports, and data-driven tools.
+  version: "1.0.0"
+  contact:
+    name: Songstats API Support
+    email: api@songstats.com
+    url: https://songstats.com/for/developers
+  termsOfService: https://songstats.com/terms
+servers:
+  - url: https://api.songstats.com/enterprise/v1
+    description: Songstats Enterprise API
+
+security:
+  - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+      description: "API key from the Songstats Enterprise dashboard. Contact api@songstats.com for access."
+
+  schemas:
+    ArtistInfo:
+      type: object
+      description: Basic information about a music artist
+      properties:
+        songstats_artist_id:
+          type: string
+          description: Songstats internal artist ID
+        name:
+          type: string
+          description: Artist name
+        genres:
+          type: array
+          items:
+            type: string
+          description: Associated genres
+        links:
+          type: object
+          description: Platform links for the artist
+        image_url:
+          type: string
+          description: Artist image URL
+
+    ArtistStats:
+      type: object
+      description: Current statistics for an artist across streaming platforms
+      properties:
+        songstats_artist_id:
+          type: string
+        source:
+          type: string
+          description: Streaming platform source (spotify, apple_music, deezer, etc.)
+        followers:
+          type: integer
+          description: Follower count
+        monthly_listeners:
+          type: integer
+          description: Monthly listener count
+        playlists_editorial_current:
+          type: integer
+          description: Current editorial playlist count
+        playlists_editorial_total:
+          type: integer
+          description: Total editorial playlist placements ever
+
+    TrackInfo:
+      type: object
+      description: Basic information about a music track
+      properties:
+        songstats_track_id:
+          type: string
+          description: Songstats internal track ID
+        title:
+          type: string
+          description: Track title
+        artists:
+          type: array
+          items:
+            type: string
+          description: Track artists
+        isrc:
+          type: string
+          description: International Standard Recording Code
+        genres:
+          type: array
+          items:
+            type: string
+          description: Track genres
+        release_date:
+          type: string
+          format: date
+          description: Track release date
+
+    TrackStats:
+      type: object
+      description: Current statistics for a track across streaming platforms
+      properties:
+        songstats_track_id:
+          type: string
+        source:
+          type: string
+        streams:
+          type: integer
+        playlists_editorial_current:
+          type: integer
+        playlists_editorial_total:
+          type: integer
+        chart_position:
+          type: integer
+
+    LabelInfo:
+      type: object
+      description: Basic information about a record label
+      properties:
+        songstats_label_id:
+          type: string
+        name:
+          type: string
+        genres:
+          type: array
+          items:
+            type: string
+
+    SourceInfo:
+      type: object
+      description: Available streaming platform sources
+      properties:
+        source:
+          type: string
+          description: Platform identifier
+        name:
+          type: string
+          description: Platform display name
+
+    StatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: API status
+
+paths:
+  /info/sources:
+    get:
+      operationId: getInfoSources
+      summary: Get Available Sources
+      description: Returns list of available streaming platform sources
+      tags:
+        - Info
+      responses:
+        "200":
+          description: List of available sources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SourceInfo'
+        "401":
+          description: Unauthorized
+
+  /info/status:
+    get:
+      operationId: getInfoStatus
+      summary: Get API Status
+      description: Returns current API status
+      tags:
+        - Info
+      responses:
+        "200":
+          description: API status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+
+  /info/definitions:
+    get:
+      operationId: getInfoDefinitions
+      summary: Get Field Definitions
+      description: Returns definitions for all data fields returned by the API
+      tags:
+        - Info
+      responses:
+        "200":
+          description: Field definitions
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /artists/info:
+    get:
+      operationId: getArtistInfo
+      summary: Get Artist Info
+      description: Returns basic information about an artist
+      tags:
+        - Artists
+      parameters:
+        - name: songstats_artist_id
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Songstats artist ID
+        - name: spotify_artist_id
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Spotify artist ID
+        - name: apple_music_artist_id
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Apple Music artist ID
+      responses:
+        "200":
+          description: Artist information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtistInfo'
+        "401":
+          description: Unauthorized
+
+  /artists/stats:
+    get:
+      operationId: getArtistCurrentStats
+      summary: Get Artist Current Stats
+      description: Returns current statistics for an artist filtered by source
+      tags:
+        - Artists
+      parameters:
+        - name: songstats_artist_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats artist ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+      responses:
+        "200":
+          description: Artist current stats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtistStats'
+        "401":
+          description: Unauthorized
+
+  /artists/historic_stats:
+    get:
+      operationId: getArtistHistoricStats
+      summary: Get Artist Historic Stats
+      description: Returns historical statistics for an artist filtered by source
+      tags:
+        - Artists
+      parameters:
+        - name: songstats_artist_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats artist ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+        - name: start_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Start date for historical data
+        - name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: End date for historical data
+      responses:
+        "200":
+          description: Artist historic stats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArtistStats'
+        "401":
+          description: Unauthorized
+
+  /artists/audience:
+    get:
+      operationId: getArtistAudience
+      summary: Get Artist Audience
+      description: Returns audience data for an artist
+      tags:
+        - Artists
+      parameters:
+        - name: songstats_artist_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats artist ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+      responses:
+        "200":
+          description: Artist audience data
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /artists/audience/details:
+    get:
+      operationId: getArtistAudienceDetails
+      summary: Get Artist Audience Details
+      description: Returns detailed audience insights for an artist in a specific country
+      tags:
+        - Artists
+      parameters:
+        - name: songstats_artist_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats artist ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+        - name: country_code
+          in: query
+          required: true
+          schema:
+            type: string
+          description: ISO 3166-1 alpha-2 country code
+      responses:
+        "200":
+          description: Artist audience details
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /artists/catalog:
+    get:
+      operationId: getArtistCatalog
+      summary: Get Artist Catalog
+      description: Returns the track catalog of an artist ordered by release date
+      tags:
+        - Artists
+      parameters:
+        - name: songstats_artist_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats artist ID
+      responses:
+        "200":
+          description: Artist catalog
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /artists/search:
+    get:
+      operationId: searchArtists
+      summary: Search Artists
+      description: Search for artists by name
+      tags:
+        - Artists
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+      responses:
+        "200":
+          description: Artist search results
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /artists/top_tracks:
+    get:
+      operationId: getArtistTopTracks
+      summary: Get Artist Top Tracks
+      description: Returns the top tracks of an artist sorted by rank type
+      tags:
+        - Artists
+      parameters:
+        - name: songstats_artist_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats artist ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+      responses:
+        "200":
+          description: Artist top tracks
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /artists/top_playlists:
+    get:
+      operationId: getArtistTopPlaylists
+      summary: Get Artist Top Playlists
+      description: Returns top playlists featuring the artist
+      tags:
+        - Artists
+      parameters:
+        - name: songstats_artist_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats artist ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+      responses:
+        "200":
+          description: Artist top playlists
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /artists/activities:
+    get:
+      operationId: getArtistActivities
+      summary: Get Artist Activities
+      description: Returns recent activities for an artist
+      tags:
+        - Artists
+      parameters:
+        - name: songstats_artist_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats artist ID
+      responses:
+        "200":
+          description: Artist activities
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /artists/link_request:
+    post:
+      operationId: addArtistLinkRequest
+      summary: Add Artist Link Request
+      description: Request a link to be added to an artist
+      tags:
+        - Artists
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                songstats_artist_id:
+                  type: string
+                link:
+                  type: string
+      responses:
+        "200":
+          description: Link request submitted
+        "401":
+          description: Unauthorized
+    delete:
+      operationId: removeArtistLinkRequest
+      summary: Remove Artist Link Request
+      description: Request a link to be removed from an artist
+      tags:
+        - Artists
+      parameters:
+        - name: songstats_artist_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: link
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Link removal request submitted
+        "401":
+          description: Unauthorized
+
+  /artists/track_request:
+    post:
+      operationId: addArtistTrackRequest
+      summary: Add Artist Track Request
+      description: Request for a track to be added to an artist catalog
+      tags:
+        - Artists
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                songstats_artist_id:
+                  type: string
+                songstats_track_id:
+                  type: string
+      responses:
+        "200":
+          description: Track request submitted
+        "401":
+          description: Unauthorized
+    delete:
+      operationId: removeArtistTrackRequest
+      summary: Remove Artist Track Request
+      description: Request for a track to be removed from an artist catalog
+      tags:
+        - Artists
+      parameters:
+        - name: songstats_artist_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: songstats_track_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Track removal request submitted
+        "401":
+          description: Unauthorized
+
+  /tracks/info:
+    get:
+      operationId: getTrackInfo
+      summary: Get Track Info
+      description: Returns basic information about a track
+      tags:
+        - Tracks
+      parameters:
+        - name: songstats_track_id
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Songstats track ID
+        - name: isrc
+          in: query
+          required: false
+          schema:
+            type: string
+          description: International Standard Recording Code
+        - name: spotify_track_id
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Spotify track ID
+      responses:
+        "200":
+          description: Track information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackInfo'
+        "401":
+          description: Unauthorized
+
+  /tracks/stats:
+    get:
+      operationId: getTrackCurrentStats
+      summary: Get Track Current Stats
+      description: Returns summary and detailed information of a track filtered by source
+      tags:
+        - Tracks
+      parameters:
+        - name: songstats_track_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats track ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+      responses:
+        "200":
+          description: Track current stats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackStats'
+        "401":
+          description: Unauthorized
+
+  /tracks/historic_stats:
+    get:
+      operationId: getTrackHistoricStats
+      summary: Get Track Historic Stats
+      description: Returns historic information of a track filtered by source
+      tags:
+        - Tracks
+      parameters:
+        - name: songstats_track_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats track ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+        - name: start_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Start date for historical data
+        - name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: End date for historical data
+      responses:
+        "200":
+          description: Track historic stats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrackStats'
+        "401":
+          description: Unauthorized
+
+  /tracks/search:
+    get:
+      operationId: searchTracks
+      summary: Search Tracks
+      description: Search for tracks by title or artist
+      tags:
+        - Tracks
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+      responses:
+        "200":
+          description: Track search results
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /tracks/activities:
+    get:
+      operationId: getTrackActivities
+      summary: Get Track Activities
+      description: Returns recent activities for a track
+      tags:
+        - Tracks
+      parameters:
+        - name: songstats_track_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats track ID
+      responses:
+        "200":
+          description: Track activities
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /tracks/locations:
+    get:
+      operationId: getTrackLocations
+      summary: Get Track Locations
+      description: Returns geographic streaming location data for a track
+      tags:
+        - Tracks
+      parameters:
+        - name: songstats_track_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats track ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+      responses:
+        "200":
+          description: Track location data
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /tracks/link_request:
+    post:
+      operationId: addTrackLinkRequest
+      summary: Add Track Link Request
+      description: Request a link to be added to a track
+      tags:
+        - Tracks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                songstats_track_id:
+                  type: string
+                link:
+                  type: string
+      responses:
+        "200":
+          description: Link request submitted
+        "401":
+          description: Unauthorized
+    delete:
+      operationId: removeTrackLinkRequest
+      summary: Remove Track Link Request
+      description: Request a link to be removed from a track
+      tags:
+        - Tracks
+      parameters:
+        - name: songstats_track_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: link
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Link removal request submitted
+        "401":
+          description: Unauthorized
+
+  /labels/info:
+    get:
+      operationId: getLabelInfo
+      summary: Get Label Info
+      description: Returns basic information about a record label
+      tags:
+        - Labels
+      parameters:
+        - name: songstats_label_id
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Songstats label ID
+        - name: label_name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Label name search
+      responses:
+        "200":
+          description: Label information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelInfo'
+        "401":
+          description: Unauthorized
+
+  /labels/stats:
+    get:
+      operationId: getLabelCurrentStats
+      summary: Get Label Current Stats
+      description: Returns current statistics for a record label across streaming platforms
+      tags:
+        - Labels
+      parameters:
+        - name: songstats_label_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats label ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+      responses:
+        "200":
+          description: Label current stats
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /labels/historic_stats:
+    get:
+      operationId: getLabelHistoricStats
+      summary: Get Label Historic Stats
+      description: Returns historical statistics for a record label
+      tags:
+        - Labels
+      parameters:
+        - name: songstats_label_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats label ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+        - name: start_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Start date
+        - name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: End date
+      responses:
+        "200":
+          description: Label historic stats
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /labels/audience:
+    get:
+      operationId: getLabelAudience
+      summary: Get Label Audience
+      description: Returns audience data for a record label
+      tags:
+        - Labels
+      parameters:
+        - name: songstats_label_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats label ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+      responses:
+        "200":
+          description: Label audience data
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /labels/catalog:
+    get:
+      operationId: getLabelCatalog
+      summary: Get Label Catalog
+      description: Returns the track catalog of a record label
+      tags:
+        - Labels
+      parameters:
+        - name: songstats_label_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats label ID
+      responses:
+        "200":
+          description: Label catalog
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /labels/search:
+    get:
+      operationId: searchLabels
+      summary: Search Labels
+      description: Search for record labels by name
+      tags:
+        - Labels
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+      responses:
+        "200":
+          description: Label search results
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /labels/top_tracks:
+    get:
+      operationId: getLabelTopTracks
+      summary: Get Label Top Tracks
+      description: Returns top tracks for a record label
+      tags:
+        - Labels
+      parameters:
+        - name: songstats_label_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats label ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+      responses:
+        "200":
+          description: Label top tracks
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /labels/track_request:
+    post:
+      operationId: addLabelTrackRequest
+      summary: Add Label Track Request
+      description: Request for a track to be added to a label catalog
+      tags:
+        - Labels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                songstats_label_id:
+                  type: string
+                songstats_track_id:
+                  type: string
+      responses:
+        "200":
+          description: Track request submitted
+        "401":
+          description: Unauthorized
+    delete:
+      operationId: removeLabelTrackRequest
+      summary: Remove Label Track Request
+      description: Request for a track to be removed from a label catalog
+      tags:
+        - Labels
+      parameters:
+        - name: songstats_label_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: songstats_track_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Track removal request submitted
+        "401":
+          description: Unauthorized
+
+  /labels/link_request:
+    post:
+      operationId: addLabelLinkRequest
+      summary: Add Label Link Request
+      description: Request a link to be added to a record label
+      tags:
+        - Labels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                songstats_label_id:
+                  type: string
+                link:
+                  type: string
+      responses:
+        "200":
+          description: Link request submitted
+        "401":
+          description: Unauthorized
+    delete:
+      operationId: removeLabelLinkRequest
+      summary: Remove Label Link Request
+      description: Request a link to be removed from a record label
+      tags:
+        - Labels
+      parameters:
+        - name: songstats_label_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: link
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Link removal request submitted
+        "401":
+          description: Unauthorized
+
+  /collaborators/info:
+    get:
+      operationId: getCollaboratorInfo
+      summary: Get Collaborator Info
+      description: Returns basic information about a music collaborator (producer, songwriter, etc.)
+      tags:
+        - Collaborators
+      parameters:
+        - name: songstats_collaborator_id
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Songstats collaborator ID
+      responses:
+        "200":
+          description: Collaborator information
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /collaborators/stats:
+    get:
+      operationId: getCollaboratorCurrentStats
+      summary: Get Collaborator Current Stats
+      description: Returns current statistics for a music collaborator
+      tags:
+        - Collaborators
+      parameters:
+        - name: songstats_collaborator_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats collaborator ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+      responses:
+        "200":
+          description: Collaborator current stats
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /collaborators/catalog:
+    get:
+      operationId: getCollaboratorCatalog
+      summary: Get Collaborator Catalog
+      description: Returns the track catalog of a collaborator
+      tags:
+        - Collaborators
+      parameters:
+        - name: songstats_collaborator_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats collaborator ID
+      responses:
+        "200":
+          description: Collaborator catalog
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /collaborators/search:
+    get:
+      operationId: searchCollaborators
+      summary: Search Collaborators
+      description: Search for music collaborators by name
+      tags:
+        - Collaborators
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+      responses:
+        "200":
+          description: Collaborator search results
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+
+  /collaborators/top_tracks:
+    get:
+      operationId: getCollaboratorTopTracks
+      summary: Get Collaborator Top Tracks
+      description: Returns top tracks for a collaborator
+      tags:
+        - Collaborators
+      parameters:
+        - name: songstats_collaborator_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Songstats collaborator ID
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Streaming platform source filter
+      responses:
+        "200":
+          description: Collaborator top tracks
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized

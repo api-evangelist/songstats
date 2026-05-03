@@ -1,0 +1,72 @@
+extends: spectral:oas
+rules:
+
+  # Songstats API uses snake_case for query parameters
+  songstats-query-param-snake-case:
+    message: "Query parameters should use snake_case"
+    severity: warn
+    given: "$.paths[*][*].parameters[?(@.in == 'query')].name"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-z0-9_]*$"
+
+  # All operation summaries should use Title Case
+  songstats-operation-summary-title-case:
+    message: "Operation summaries should use Title Case"
+    severity: warn
+    given: "$.paths[*][*].summary"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[A-Z]"
+
+  # All operations should have an operationId
+  songstats-operation-id-required:
+    message: "Operations must have an operationId"
+    severity: error
+    given: "$.paths[*][get,post,put,delete,patch]"
+    then:
+      field: operationId
+      function: truthy
+
+  # Operations must have at least one tag
+  songstats-operation-tags-required:
+    message: "Operations must have at least one tag"
+    severity: warn
+    given: "$.paths[*][get,post,put,delete,patch]"
+    then:
+      field: tags
+      function: truthy
+
+  # API must define security schemes
+  songstats-security-schemes-defined:
+    message: "API must define security schemes (apikey in header)"
+    severity: error
+    given: "$.components.securitySchemes"
+    then:
+      function: truthy
+
+  # Responses must document at least a 2xx response
+  songstats-success-response-required:
+    message: "Operations must document at least one success response"
+    severity: warn
+    given: "$.paths[*][get,post,put,delete,patch].responses"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          anyOf:
+            - required: ["200"]
+            - required: ["201"]
+            - required: ["204"]
+
+  # API key auth should use 'apikey' header name
+  songstats-api-key-header-name:
+    message: "API key should use 'apikey' as the header name"
+    severity: warn
+    given: "$.components.securitySchemes[?(@.type == 'apiKey')].name"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^apikey$"

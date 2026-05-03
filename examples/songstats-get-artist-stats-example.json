@@ -1,0 +1,31 @@
+{
+  "description": "Example response from GET /artists/stats returning current Spotify stats for an artist",
+  "request": {
+    "method": "GET",
+    "url": "https://api.songstats.com/enterprise/v1/artists/stats?songstats_artist_id=abc123&source=spotify",
+    "headers": {
+      "apikey": "your-api-key-here"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "songstats_artist_id": "abc123",
+      "source": "spotify",
+      "followers": 5234876,
+      "monthly_listeners": 12456789,
+      "playlists_editorial_current": 42,
+      "playlists_editorial_total": 287,
+      "playlists_pitch_current": 3,
+      "playlists_personal_current": 98234,
+      "playlists_algorithmic_current": 67,
+      "chart_positions": [
+        {
+          "chart": "Global Top 50",
+          "position": 23,
+          "date": "2026-05-01"
+        }
+      ]
+    }
+  }
+}

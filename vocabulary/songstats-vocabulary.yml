@@ -1,0 +1,158 @@
+vocabulary:
+  name: Songstats Music Analytics Vocabulary
+  description: >-
+    Vocabulary for the Songstats Enterprise API covering music industry analytics,
+    streaming data, audience insights, and music industry terminology.
+  version: "1.0.0"
+  created: "2026-05-02"
+  modified: "2026-05-02"
+  tags:
+    - Music
+    - Analytics
+    - Streaming
+
+terms:
+
+  # Core entities
+  - term: Artist
+    definition: >-
+      A music performer or group tracked in the Songstats platform. Identified by a
+      Songstats artist ID and linked to streaming platform identifiers.
+    type: concept
+    tags: [Artists, Core]
+
+  - term: Track
+    definition: >-
+      A single music recording tracked in the Songstats platform. Identified by
+      Songstats track ID, ISRC, or platform-specific IDs (Spotify track ID, etc.)
+    type: concept
+    tags: [Tracks, Core]
+
+  - term: Label
+    definition: >-
+      A record label or music publisher tracked in the Songstats platform, with
+      stats aggregated across all tracks in its catalog.
+    type: concept
+    tags: [Labels, Core]
+
+  - term: Collaborator
+    definition: >-
+      A music industry professional (producer, songwriter, mixer) tracked in Songstats
+      based on their production credits across tracks.
+    type: concept
+    tags: [Collaborators, Core]
+
+  # Analytics concepts
+  - term: Source
+    definition: >-
+      A streaming platform or music service from which Songstats collects data.
+      Examples: spotify, apple_music, amazon_music, deezer, tidal, youtube, tiktok.
+    type: concept
+    tags: [Analytics, Core]
+
+  - term: Current Stats
+    definition: >-
+      The latest available metrics for an artist, track, or label on a given
+      streaming platform, including followers, streams, and playlist placements.
+    type: concept
+    tags: [Analytics, Core]
+
+  - term: Historic Stats
+    definition: >-
+      Time-series streaming metrics for an artist, track, or label, returned as
+      a daily breakdown over a specified date range.
+    type: concept
+    tags: [Analytics, Core]
+
+  - term: Monthly Listeners
+    definition: >-
+      The count of unique listeners who streamed an artist's music in the last 30 days
+      on Spotify. A key Spotify-specific metric.
+    type: concept
+    tags: [Analytics, Spotify]
+
+  - term: Editorial Playlist
+    definition: >-
+      A curated playlist created by the streaming platform's editorial team
+      (e.g., Spotify's New Music Friday). Placement in editorial playlists
+      is a significant driver of streams.
+    type: concept
+    tags: [Playlists, Analytics]
+
+  - term: Algorithmic Playlist
+    definition: >-
+      An auto-generated playlist created by a streaming platform's algorithm
+      based on listener behavior (e.g., Spotify's Discover Weekly).
+    type: concept
+    tags: [Playlists, Analytics]
+
+  - term: Personal Playlist
+    definition: >-
+      A user-created playlist on a streaming platform. High personal playlist
+      counts indicate organic fan engagement.
+    type: concept
+    tags: [Playlists, Analytics]
+
+  # Data concepts
+  - term: ISRC
+    definition: >-
+      International Standard Recording Code — a global identifier for a specific
+      sound recording, used to match tracks across platforms.
+    type: concept
+    tags: [Standards, Tracks]
+
+  - term: Songstats Artist ID
+    definition: >-
+      Songstats' internal unique identifier for an artist, used as the primary
+      key in API requests (songstats_artist_id parameter).
+    type: concept
+    tags: [Identifiers, Artists]
+
+  - term: Activities
+    definition: >-
+      Notable events for an artist or track such as editorial playlist adds,
+      chart entries, media features, and social media milestones.
+    type: concept
+    tags: [Analytics, Events]
+
+  - term: Songshare
+    definition: >-
+      Data about how frequently a track or artist's music is shared across
+      social media platforms, measuring organic virality.
+    type: concept
+    tags: [Analytics, Social]
+
+  - term: Audience
+    definition: >-
+      Demographic and geographic data about who is listening to an artist or label
+      on a given streaming platform.
+    type: concept
+    tags: [Analytics, Audience]
+
+  - term: Catalog
+    definition: >-
+      The complete list of tracks released by an artist, label, or attributed to
+      a collaborator, ordered by release date.
+    type: concept
+    tags: [Catalog, Core]
+
+  - term: Radiostats
+    definition: >-
+      Songstats' integrated radio data service tracking airplay across 40,000+
+      terrestrial radio stations, digital stations, and SiriusXM channels.
+    type: concept
+    tags: [Radio, Integration]
+
+  - term: Link Request
+    definition: >-
+      A data correction request to add a missing platform link to an artist, track,
+      or label profile in the Songstats database.
+    type: concept
+    tags: [Data Quality, Operations]
+
+  - term: Track Request
+    definition: >-
+      A data correction request to add or remove a track from an artist's or
+      label's catalog in the Songstats database.
+    type: concept
+    tags: [Data Quality, Operations]

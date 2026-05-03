@@ -1,0 +1,33 @@
+{
+  "description": "Example response from GET /tracks/historic_stats returning daily streaming history for a track",
+  "request": {
+    "method": "GET",
+    "url": "https://api.songstats.com/enterprise/v1/tracks/historic_stats?songstats_track_id=trk456&source=spotify&start_date=2026-04-01&end_date=2026-04-30",
+    "headers": {
+      "apikey": "your-api-key-here"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "songstats_track_id": "trk456",
+      "source": "spotify",
+      "stats": [
+        {
+          "date": "2026-04-01",
+          "streams": 45231,
+          "streams_total": 8234567,
+          "playlists_editorial_current": 12,
+          "playlists_personal_current": 23456
+        },
+        {
+          "date": "2026-04-02",
+          "streams": 48967,
+          "streams_total": 8283534,
+          "playlists_editorial_current": 13,
+          "playlists_personal_current": 23789
+        }
+      ]
+    }
+  }
+}

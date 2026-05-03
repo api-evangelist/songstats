@@ -1,0 +1,67 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "mo": "http://purl.org/ontology/mo/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "Artist": {
+      "@id": "schema:MusicGroup",
+      "@type": "@id"
+    },
+    "Track": {
+      "@id": "schema:MusicRecording",
+      "@type": "@id"
+    },
+    "Label": {
+      "@id": "schema:MusicLabel",
+      "@type": "@id"
+    },
+    "Collaborator": {
+      "@id": "schema:Person",
+      "@type": "@id"
+    },
+
+    "songstats_artist_id": "@id",
+    "songstats_track_id": "@id",
+    "songstats_label_id": "@id",
+    "name": "schema:name",
+    "title": "schema:name",
+    "genres": {
+      "@id": "schema:genre",
+      "@container": "@set"
+    },
+    "isrc": {
+      "@id": "schema:isrcCode",
+      "@type": "xsd:string"
+    },
+    "release_date": {
+      "@id": "schema:datePublished",
+      "@type": "xsd:date"
+    },
+    "image_url": {
+      "@id": "schema:image",
+      "@type": "@id"
+    },
+    "artists": {
+      "@id": "schema:byArtist",
+      "@container": "@set"
+    },
+    "followers": {
+      "@id": "schema:followeeCount",
+      "@type": "xsd:integer"
+    },
+    "monthly_listeners": {
+      "@id": "mo:performer",
+      "@type": "xsd:integer"
+    },
+    "streams": {
+      "@id": "schema:interactionCount",
+      "@type": "xsd:integer"
+    },
+    "source": {
+      "@id": "schema:provider",
+      "@type": "xsd:string"
+    }
+  }
+}

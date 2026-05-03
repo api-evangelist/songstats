@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/songstats/main/json-schema/songstats-artist-schema.json",
+  "title": "Songstats Artist",
+  "description": "A music artist in the Songstats platform with streaming analytics data.",
+  "type": "object",
+  "properties": {
+    "songstats_artist_id": {
+      "type": "string",
+      "description": "Songstats internal artist identifier"
+    },
+    "name": {
+      "type": "string",
+      "description": "Artist name"
+    },
+    "genres": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Music genres associated with this artist"
+    },
+    "image_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "Artist profile image URL"
+    },
+    "links": {
+      "type": "object",
+      "description": "Platform-specific links for the artist",
+      "properties": {
+        "spotify": {"type": "string"},
+        "apple_music": {"type": "string"},
+        "deezer": {"type": "string"},
+        "amazon_music": {"type": "string"},
+        "tidal": {"type": "string"},
+        "youtube": {"type": "string"}
+      }
+    },
+    "stats": {
+      "type": "object",
+      "description": "Current streaming statistics (from /artists/stats)",
+      "properties": {
+        "source": {"type": "string"},
+        "followers": {"type": "integer"},
+        "monthly_listeners": {"type": "integer"},
+        "playlists_editorial_current": {"type": "integer"},
+        "playlists_editorial_total": {"type": "integer"}
+      }
+    }
+  },
+  "required": ["songstats_artist_id", "name"]
+}

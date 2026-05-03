@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/songstats/main/json-schema/songstats-track-schema.json",
+  "title": "Songstats Track",
+  "description": "A music track in the Songstats platform with streaming analytics data.",
+  "type": "object",
+  "properties": {
+    "songstats_track_id": {
+      "type": "string",
+      "description": "Songstats internal track identifier"
+    },
+    "title": {
+      "type": "string",
+      "description": "Track title"
+    },
+    "artists": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Artist names associated with this track"
+    },
+    "isrc": {
+      "type": ["string", "null"],
+      "description": "International Standard Recording Code"
+    },
+    "release_date": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Track release date (YYYY-MM-DD)"
+    },
+    "genres": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Music genres associated with this track"
+    },
+    "links": {
+      "type": "object",
+      "description": "Platform-specific links for the track",
+      "properties": {
+        "spotify": {"type": "string"},
+        "apple_music": {"type": "string"},
+        "deezer": {"type": "string"},
+        "amazon_music": {"type": "string"},
+        "tidal": {"type": "string"},
+        "youtube": {"type": "string"}
+      }
+    },
+    "stats": {
+      "type": "object",
+      "description": "Current streaming statistics (from /tracks/stats)",
+      "properties": {
+        "source": {"type": "string"},
+        "streams": {"type": "integer"},
+        "playlists_editorial_current": {"type": "integer"},
+        "playlists_editorial_total": {"type": "integer"},
+        "chart_position": {"type": ["integer", "null"]}
+      }
+    }
+  },
+  "required": ["songstats_track_id", "title"]
+}

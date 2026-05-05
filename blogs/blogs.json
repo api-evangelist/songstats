@@ -1,0 +1,13 @@
+{
+  "repo": "songstats",
+  "feeds": [
+    {
+      "source": "https://lab.songstats.com/",
+      "feed_url": "https://lab.songstats.com/feed",
+      "saved": 10,
+      "title": "The Songstats Lab - Medium"
+    }
+  ],
+  "post_count": 10,
+  "fetched": "2026-05-03T23:36:48Z"
+}

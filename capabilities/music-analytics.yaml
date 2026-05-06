@@ -1,383 +1,714 @@
-naftiko: "1.0.0-alpha1"
-
+naftiko: 1.0.0-alpha2
 info:
-  label: "Songstats Music Analytics"
-  description: >-
-    Workflow capability for music industry analytics using the Songstats Enterprise API.
-    Provides streaming performance monitoring, audience insights, catalog management,
-    and playlist tracking for artists, tracks, record labels, and collaborators across
-    Spotify, Apple Music, Amazon Music, Deezer, TikTok, and 40,000+ radio stations.
-    Used by A&R teams, label executives, artist managers, and music data analysts.
+  label: Songstats Music Analytics
+  description: Workflow capability for music industry analytics using the Songstats Enterprise API. Provides streaming performance
+    monitoring, audience insights, catalog management, and playlist tracking for artists, tracks, record labels, and collaborators
+    across Spotify, Apple Music, Amazon Music, Deezer, TikTok, and 40,000+ radio stations. Used by A&R teams, label executives,
+    artist managers, and music data analysts.
   tags:
-    - Songstats
-    - Music
-    - Analytics
-    - Streaming
-    - Artists
-    - Tracks
-    - Labels
-    - Playlists
-  created: "2026-05-02"
-  modified: "2026-05-02"
-
+  - Songstats
+  - Music
+  - Analytics
+  - Streaming
+  - Artists
+  - Tracks
+  - Labels
+  - Playlists
+  created: '2026-05-02'
+  modified: '2026-05-06'
 binds:
-  - namespace: env
-    keys:
-      SONGSTATS_API_KEY: SONGSTATS_API_KEY
-
+- namespace: env
+  keys:
+    SONGSTATS_API_KEY: SONGSTATS_API_KEY
 capability:
   consumes:
-    - import: songstats
-      location: ./shared/songstats.yaml
-
+  - type: http
+    namespace: songstats
+    baseUri: https://api.songstats.com/enterprise/v1
+    description: Songstats Enterprise API v1
+    authentication:
+      type: apikey
+      key: apikey
+      value: '{{SONGSTATS_API_KEY}}'
+      placement: header
+    resources:
+    - name: artists
+      path: /artists
+      description: Music artist data and analytics
+      operations:
+      - name: get-artist-info
+        method: GET
+        description: Get basic information about an artist
+        inputParameters:
+        - name: songstats_artist_id
+          in: query
+          type: string
+          required: false
+          description: Songstats artist ID
+        - name: spotify_artist_id
+          in: query
+          type: string
+          required: false
+          description: Spotify artist ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-artist-stats
+        method: GET
+        description: Get current streaming stats for an artist
+        inputParameters:
+        - name: songstats_artist_id
+          in: query
+          type: string
+          required: true
+          description: Songstats artist ID
+        - name: source
+          in: query
+          type: string
+          required: false
+          description: Streaming platform source filter
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-artist-historic-stats
+        method: GET
+        description: Get historical streaming stats for an artist
+        inputParameters:
+        - name: songstats_artist_id
+          in: query
+          type: string
+          required: true
+          description: Songstats artist ID
+        - name: source
+          in: query
+          type: string
+          required: false
+          description: Streaming platform source filter
+        - name: start_date
+          in: query
+          type: string
+          required: false
+          description: Start date (YYYY-MM-DD)
+        - name: end_date
+          in: query
+          type: string
+          required: false
+          description: End date (YYYY-MM-DD)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-artist-audience
+        method: GET
+        description: Get audience data for an artist
+        inputParameters:
+        - name: songstats_artist_id
+          in: query
+          type: string
+          required: true
+          description: Songstats artist ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-artist-audience-details
+        method: GET
+        description: Get detailed audience insights for an artist by country
+        inputParameters:
+        - name: songstats_artist_id
+          in: query
+          type: string
+          required: true
+          description: Songstats artist ID
+        - name: country_code
+          in: query
+          type: string
+          required: true
+          description: ISO 3166-1 alpha-2 country code
+        - name: source
+          in: query
+          type: string
+          required: false
+          description: Platform source filter
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-artist-catalog
+        method: GET
+        description: Get track catalog of an artist
+        inputParameters:
+        - name: songstats_artist_id
+          in: query
+          type: string
+          required: true
+          description: Songstats artist ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-artist-top-tracks
+        method: GET
+        description: Get top tracks of an artist
+        inputParameters:
+        - name: songstats_artist_id
+          in: query
+          type: string
+          required: true
+          description: Songstats artist ID
+        - name: source
+          in: query
+          type: string
+          required: false
+          description: Platform source filter
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-artist-top-playlists
+        method: GET
+        description: Get top playlists featuring an artist
+        inputParameters:
+        - name: songstats_artist_id
+          in: query
+          type: string
+          required: true
+          description: Songstats artist ID
+        - name: source
+          in: query
+          type: string
+          required: false
+          description: Platform source filter
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: search-artists
+        method: GET
+        description: Search for artists by name
+        inputParameters:
+        - name: q
+          in: query
+          type: string
+          required: true
+          description: Search query
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: tracks
+      path: /tracks
+      description: Music track data and analytics
+      operations:
+      - name: get-track-info
+        method: GET
+        description: Get basic information about a track
+        inputParameters:
+        - name: songstats_track_id
+          in: query
+          type: string
+          required: false
+          description: Songstats track ID
+        - name: isrc
+          in: query
+          type: string
+          required: false
+          description: ISRC code
+        - name: spotify_track_id
+          in: query
+          type: string
+          required: false
+          description: Spotify track ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-track-stats
+        method: GET
+        description: Get current stats for a track
+        inputParameters:
+        - name: songstats_track_id
+          in: query
+          type: string
+          required: true
+          description: Songstats track ID
+        - name: source
+          in: query
+          type: string
+          required: false
+          description: Platform source filter
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-track-historic-stats
+        method: GET
+        description: Get historical stats for a track
+        inputParameters:
+        - name: songstats_track_id
+          in: query
+          type: string
+          required: true
+          description: Songstats track ID
+        - name: source
+          in: query
+          type: string
+          required: false
+          description: Platform source filter
+        - name: start_date
+          in: query
+          type: string
+          required: false
+          description: Start date (YYYY-MM-DD)
+        - name: end_date
+          in: query
+          type: string
+          required: false
+          description: End date (YYYY-MM-DD)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: search-tracks
+        method: GET
+        description: Search for tracks by title or artist
+        inputParameters:
+        - name: q
+          in: query
+          type: string
+          required: true
+          description: Search query
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: labels
+      path: /labels
+      description: Record label data and analytics
+      operations:
+      - name: get-label-info
+        method: GET
+        description: Get basic information about a record label
+        inputParameters:
+        - name: songstats_label_id
+          in: query
+          type: string
+          required: false
+          description: Songstats label ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-label-stats
+        method: GET
+        description: Get current stats for a record label
+        inputParameters:
+        - name: songstats_label_id
+          in: query
+          type: string
+          required: true
+          description: Songstats label ID
+        - name: source
+          in: query
+          type: string
+          required: false
+          description: Platform source filter
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-label-catalog
+        method: GET
+        description: Get track catalog of a record label
+        inputParameters:
+        - name: songstats_label_id
+          in: query
+          type: string
+          required: true
+          description: Songstats label ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: search-labels
+        method: GET
+        description: Search for record labels by name
+        inputParameters:
+        - name: q
+          in: query
+          type: string
+          required: true
+          description: Search query
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
   exposes:
-    - type: rest
-      port: 8080
-      namespace: songstats-music-analytics-api
-      description: "Unified REST API for music industry analytics with Songstats."
-      resources:
-        - path: /v1/artists
-          name: artists
-          description: "Artist analytics and data"
-          operations:
-            - method: GET
-              name: get-artist-info
-              description: "Get basic information about an artist"
-              call: "songstats.get-artist-info"
-              with:
-                songstats_artist_id: "rest.songstats_artist_id"
-                spotify_artist_id: "rest.spotify_artist_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: get-artist-stats
-              description: "Get current streaming stats for an artist"
-              call: "songstats.get-artist-stats"
-              with:
-                songstats_artist_id: "rest.songstats_artist_id"
-                source: "rest.source"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: get-artist-historic-stats
-              description: "Get historical streaming stats for an artist"
-              call: "songstats.get-artist-historic-stats"
-              with:
-                songstats_artist_id: "rest.songstats_artist_id"
-                source: "rest.source"
-                start_date: "rest.start_date"
-                end_date: "rest.end_date"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: get-artist-audience
-              description: "Get audience demographics for an artist"
-              call: "songstats.get-artist-audience"
-              with:
-                songstats_artist_id: "rest.songstats_artist_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: get-artist-audience-details
-              description: "Get detailed audience insights for an artist by country"
-              call: "songstats.get-artist-audience-details"
-              with:
-                songstats_artist_id: "rest.songstats_artist_id"
-                country_code: "rest.country_code"
-                source: "rest.source"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: get-artist-catalog
-              description: "Get full track catalog for an artist"
-              call: "songstats.get-artist-catalog"
-              with:
-                songstats_artist_id: "rest.songstats_artist_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: get-artist-top-tracks
-              description: "Get top performing tracks for an artist"
-              call: "songstats.get-artist-top-tracks"
-              with:
-                songstats_artist_id: "rest.songstats_artist_id"
-                source: "rest.source"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: get-artist-top-playlists
-              description: "Get top playlists featuring an artist"
-              call: "songstats.get-artist-top-playlists"
-              with:
-                songstats_artist_id: "rest.songstats_artist_id"
-                source: "rest.source"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: search-artists
-              description: "Search for artists by name"
-              call: "songstats.search-artists"
-              with:
-                q: "rest.q"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/tracks
-          name: tracks
-          description: "Track analytics and data"
-          operations:
-            - method: GET
-              name: get-track-info
-              description: "Get basic information about a track"
-              call: "songstats.get-track-info"
-              with:
-                songstats_track_id: "rest.songstats_track_id"
-                isrc: "rest.isrc"
-                spotify_track_id: "rest.spotify_track_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: get-track-stats
-              description: "Get current streaming stats for a track"
-              call: "songstats.get-track-stats"
-              with:
-                songstats_track_id: "rest.songstats_track_id"
-                source: "rest.source"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: get-track-historic-stats
-              description: "Get historical streaming stats for a track"
-              call: "songstats.get-track-historic-stats"
-              with:
-                songstats_track_id: "rest.songstats_track_id"
-                source: "rest.source"
-                start_date: "rest.start_date"
-                end_date: "rest.end_date"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: search-tracks
-              description: "Search for tracks by title or artist"
-              call: "songstats.search-tracks"
-              with:
-                q: "rest.q"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/labels
-          name: labels
-          description: "Record label analytics and data"
-          operations:
-            - method: GET
-              name: get-label-info
-              description: "Get basic information about a record label"
-              call: "songstats.get-label-info"
-              with:
-                songstats_label_id: "rest.songstats_label_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: get-label-stats
-              description: "Get current streaming stats for a record label"
-              call: "songstats.get-label-stats"
-              with:
-                songstats_label_id: "rest.songstats_label_id"
-                source: "rest.source"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: get-label-catalog
-              description: "Get track catalog for a record label"
-              call: "songstats.get-label-catalog"
-              with:
-                songstats_label_id: "rest.songstats_label_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: GET
-              name: search-labels
-              description: "Search for record labels by name"
-              call: "songstats.search-labels"
-              with:
-                q: "rest.q"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-    - type: mcp
-      port: 9080
-      namespace: songstats-music-analytics-mcp
-      transport: http
-      description: "MCP server for AI-assisted music industry analytics with Songstats."
-      tools:
-        - name: get-artist-info
-          description: "Get basic information about a music artist by Songstats ID or Spotify ID"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "songstats.get-artist-info"
-          with:
-            songstats_artist_id: "tools.songstats_artist_id"
-            spotify_artist_id: "tools.spotify_artist_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-artist-stats
-          description: "Get current streaming stats for an artist across platforms"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "songstats.get-artist-stats"
-          with:
-            songstats_artist_id: "tools.songstats_artist_id"
-            source: "tools.source"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-artist-historic-stats
-          description: "Get historical streaming stats for an artist over a date range"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "songstats.get-artist-historic-stats"
-          with:
-            songstats_artist_id: "tools.songstats_artist_id"
-            source: "tools.source"
-            start_date: "tools.start_date"
-            end_date: "tools.end_date"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-artist-audience-details
-          description: "Get detailed audience demographics for an artist in a specific country"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "songstats.get-artist-audience-details"
-          with:
-            songstats_artist_id: "tools.songstats_artist_id"
-            country_code: "tools.country_code"
-            source: "tools.source"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-artist-top-tracks
-          description: "Get top performing tracks for an artist"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "songstats.get-artist-top-tracks"
-          with:
-            songstats_artist_id: "tools.songstats_artist_id"
-            source: "tools.source"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-artist-top-playlists
-          description: "Get top playlists featuring an artist"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "songstats.get-artist-top-playlists"
-          with:
-            songstats_artist_id: "tools.songstats_artist_id"
-            source: "tools.source"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: search-artists
-          description: "Search for music artists by name"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "songstats.search-artists"
-          with:
-            q: "tools.q"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-track-stats
-          description: "Get current streaming stats for a track"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "songstats.get-track-stats"
-          with:
-            songstats_track_id: "tools.songstats_track_id"
-            source: "tools.source"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-track-historic-stats
-          description: "Get historical streaming stats for a track over a date range"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "songstats.get-track-historic-stats"
-          with:
-            songstats_track_id: "tools.songstats_track_id"
-            source: "tools.source"
-            start_date: "tools.start_date"
-            end_date: "tools.end_date"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: search-tracks
-          description: "Search for music tracks by title or artist name"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "songstats.search-tracks"
-          with:
-            q: "tools.q"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-label-stats
-          description: "Get current streaming stats for a record label"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "songstats.get-label-stats"
-          with:
-            songstats_label_id: "tools.songstats_label_id"
-            source: "tools.source"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-label-catalog
-          description: "Get the full track catalog for a record label"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "songstats.get-label-catalog"
-          with:
-            songstats_label_id: "tools.songstats_label_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: search-labels
-          description: "Search for record labels by name"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "songstats.search-labels"
-          with:
-            q: "tools.q"
-          outputParameters:
-            - type: object
-              mapping: "$."
+  - type: rest
+    port: 8080
+    namespace: songstats-music-analytics-api
+    description: Unified REST API for music industry analytics with Songstats.
+    resources:
+    - path: /v1/artists
+      name: artists
+      description: Artist analytics and data
+      operations:
+      - method: GET
+        name: get-artist-info
+        description: Get basic information about an artist
+        call: songstats.get-artist-info
+        with:
+          songstats_artist_id: rest.songstats_artist_id
+          spotify_artist_id: rest.spotify_artist_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: get-artist-stats
+        description: Get current streaming stats for an artist
+        call: songstats.get-artist-stats
+        with:
+          songstats_artist_id: rest.songstats_artist_id
+          source: rest.source
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: get-artist-historic-stats
+        description: Get historical streaming stats for an artist
+        call: songstats.get-artist-historic-stats
+        with:
+          songstats_artist_id: rest.songstats_artist_id
+          source: rest.source
+          start_date: rest.start_date
+          end_date: rest.end_date
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: get-artist-audience
+        description: Get audience demographics for an artist
+        call: songstats.get-artist-audience
+        with:
+          songstats_artist_id: rest.songstats_artist_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: get-artist-audience-details
+        description: Get detailed audience insights for an artist by country
+        call: songstats.get-artist-audience-details
+        with:
+          songstats_artist_id: rest.songstats_artist_id
+          country_code: rest.country_code
+          source: rest.source
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: get-artist-catalog
+        description: Get full track catalog for an artist
+        call: songstats.get-artist-catalog
+        with:
+          songstats_artist_id: rest.songstats_artist_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: get-artist-top-tracks
+        description: Get top performing tracks for an artist
+        call: songstats.get-artist-top-tracks
+        with:
+          songstats_artist_id: rest.songstats_artist_id
+          source: rest.source
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: get-artist-top-playlists
+        description: Get top playlists featuring an artist
+        call: songstats.get-artist-top-playlists
+        with:
+          songstats_artist_id: rest.songstats_artist_id
+          source: rest.source
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: search-artists
+        description: Search for artists by name
+        call: songstats.search-artists
+        with:
+          q: rest.q
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tracks
+      name: tracks
+      description: Track analytics and data
+      operations:
+      - method: GET
+        name: get-track-info
+        description: Get basic information about a track
+        call: songstats.get-track-info
+        with:
+          songstats_track_id: rest.songstats_track_id
+          isrc: rest.isrc
+          spotify_track_id: rest.spotify_track_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: get-track-stats
+        description: Get current streaming stats for a track
+        call: songstats.get-track-stats
+        with:
+          songstats_track_id: rest.songstats_track_id
+          source: rest.source
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: get-track-historic-stats
+        description: Get historical streaming stats for a track
+        call: songstats.get-track-historic-stats
+        with:
+          songstats_track_id: rest.songstats_track_id
+          source: rest.source
+          start_date: rest.start_date
+          end_date: rest.end_date
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: search-tracks
+        description: Search for tracks by title or artist
+        call: songstats.search-tracks
+        with:
+          q: rest.q
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/labels
+      name: labels
+      description: Record label analytics and data
+      operations:
+      - method: GET
+        name: get-label-info
+        description: Get basic information about a record label
+        call: songstats.get-label-info
+        with:
+          songstats_label_id: rest.songstats_label_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: get-label-stats
+        description: Get current streaming stats for a record label
+        call: songstats.get-label-stats
+        with:
+          songstats_label_id: rest.songstats_label_id
+          source: rest.source
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: get-label-catalog
+        description: Get track catalog for a record label
+        call: songstats.get-label-catalog
+        with:
+          songstats_label_id: rest.songstats_label_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: search-labels
+        description: Search for record labels by name
+        call: songstats.search-labels
+        with:
+          q: rest.q
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9080
+    namespace: songstats-music-analytics-mcp
+    transport: http
+    description: MCP server for AI-assisted music industry analytics with Songstats.
+    tools:
+    - name: get-artist-info
+      description: Get basic information about a music artist by Songstats ID or Spotify ID
+      hints:
+        readOnly: true
+        idempotent: true
+      call: songstats.get-artist-info
+      with:
+        songstats_artist_id: tools.songstats_artist_id
+        spotify_artist_id: tools.spotify_artist_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-artist-stats
+      description: Get current streaming stats for an artist across platforms
+      hints:
+        readOnly: true
+        idempotent: true
+      call: songstats.get-artist-stats
+      with:
+        songstats_artist_id: tools.songstats_artist_id
+        source: tools.source
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-artist-historic-stats
+      description: Get historical streaming stats for an artist over a date range
+      hints:
+        readOnly: true
+        idempotent: true
+      call: songstats.get-artist-historic-stats
+      with:
+        songstats_artist_id: tools.songstats_artist_id
+        source: tools.source
+        start_date: tools.start_date
+        end_date: tools.end_date
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-artist-audience-details
+      description: Get detailed audience demographics for an artist in a specific country
+      hints:
+        readOnly: true
+        idempotent: true
+      call: songstats.get-artist-audience-details
+      with:
+        songstats_artist_id: tools.songstats_artist_id
+        country_code: tools.country_code
+        source: tools.source
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-artist-top-tracks
+      description: Get top performing tracks for an artist
+      hints:
+        readOnly: true
+        idempotent: true
+      call: songstats.get-artist-top-tracks
+      with:
+        songstats_artist_id: tools.songstats_artist_id
+        source: tools.source
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-artist-top-playlists
+      description: Get top playlists featuring an artist
+      hints:
+        readOnly: true
+        idempotent: true
+      call: songstats.get-artist-top-playlists
+      with:
+        songstats_artist_id: tools.songstats_artist_id
+        source: tools.source
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: search-artists
+      description: Search for music artists by name
+      hints:
+        readOnly: true
+        idempotent: true
+      call: songstats.search-artists
+      with:
+        q: tools.q
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-track-stats
+      description: Get current streaming stats for a track
+      hints:
+        readOnly: true
+        idempotent: true
+      call: songstats.get-track-stats
+      with:
+        songstats_track_id: tools.songstats_track_id
+        source: tools.source
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-track-historic-stats
+      description: Get historical streaming stats for a track over a date range
+      hints:
+        readOnly: true
+        idempotent: true
+      call: songstats.get-track-historic-stats
+      with:
+        songstats_track_id: tools.songstats_track_id
+        source: tools.source
+        start_date: tools.start_date
+        end_date: tools.end_date
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: search-tracks
+      description: Search for music tracks by title or artist name
+      hints:
+        readOnly: true
+        idempotent: true
+      call: songstats.search-tracks
+      with:
+        q: tools.q
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-label-stats
+      description: Get current streaming stats for a record label
+      hints:
+        readOnly: true
+        idempotent: true
+      call: songstats.get-label-stats
+      with:
+        songstats_label_id: tools.songstats_label_id
+        source: tools.source
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-label-catalog
+      description: Get the full track catalog for a record label
+      hints:
+        readOnly: true
+        idempotent: true
+      call: songstats.get-label-catalog
+      with:
+        songstats_label_id: tools.songstats_label_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: search-labels
+      description: Search for record labels by name
+      hints:
+        readOnly: true
+        idempotent: true
+      call: songstats.search-labels
+      with:
+        q: tools.q
+      outputParameters:
+      - type: object
+        mapping: $.

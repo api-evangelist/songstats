@@ -1,0 +1,136 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Songstats Enterprise API — Info
+  description: 'Songstats Enterprise API — Info. 3 operations. Lead operation: Get Field Definitions. Self-contained Naftiko
+    capability covering one Songstats business surface.'
+  tags:
+  - Songstats
+  - Info
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SONGSTATS_API_KEY: SONGSTATS_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: songstats-info
+    baseUri: https://api.songstats.com/enterprise/v1
+    description: Songstats Enterprise API — Info business capability. Self-contained, no shared references.
+    resources:
+    - name: info-definitions
+      path: /info/definitions
+      operations:
+      - name: getinfodefinitions
+        method: GET
+        description: Get Field Definitions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: info-sources
+      path: /info/sources
+      operations:
+      - name: getinfosources
+        method: GET
+        description: Get Available Sources
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: info-status
+      path: /info/status
+      operations:
+      - name: getinfostatus
+        method: GET
+        description: Get API Status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: apikey
+      value: '{{env.SONGSTATS_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: songstats-info-rest
+    port: 8080
+    description: REST adapter for Songstats Enterprise API — Info. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/info/definitions
+      name: info-definitions
+      description: REST surface for info-definitions.
+      operations:
+      - method: GET
+        name: getinfodefinitions
+        description: Get Field Definitions
+        call: songstats-info.getinfodefinitions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/info/sources
+      name: info-sources
+      description: REST surface for info-sources.
+      operations:
+      - method: GET
+        name: getinfosources
+        description: Get Available Sources
+        call: songstats-info.getinfosources
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/info/status
+      name: info-status
+      description: REST surface for info-status.
+      operations:
+      - method: GET
+        name: getinfostatus
+        description: Get API Status
+        call: songstats-info.getinfostatus
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: songstats-info-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Songstats Enterprise API — Info. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: get-field-definitions
+      description: Get Field Definitions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: songstats-info.getinfodefinitions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-available-sources
+      description: Get Available Sources
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: songstats-info.getinfosources
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-api-status
+      description: Get API Status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: songstats-info.getinfostatus
+      outputParameters:
+      - type: object
+        mapping: $.

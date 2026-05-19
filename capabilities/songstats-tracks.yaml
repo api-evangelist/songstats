@@ -1,0 +1,415 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Songstats Enterprise API — Tracks
+  description: 'Songstats Enterprise API — Tracks. 8 operations. Lead operation: Get Track Activities. Self-contained Naftiko
+    capability covering one Songstats business surface.'
+  tags:
+  - Songstats
+  - Tracks
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SONGSTATS_API_KEY: SONGSTATS_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: songstats-tracks
+    baseUri: https://api.songstats.com/enterprise/v1
+    description: Songstats Enterprise API — Tracks business capability. Self-contained, no shared references.
+    resources:
+    - name: tracks-activities
+      path: /tracks/activities
+      operations:
+      - name: gettrackactivities
+        method: GET
+        description: Get Track Activities
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: songstats_track_id
+          in: query
+          type: string
+          description: Songstats track ID
+          required: true
+    - name: tracks-historic_stats
+      path: /tracks/historic_stats
+      operations:
+      - name: gettrackhistoricstats
+        method: GET
+        description: Get Track Historic Stats
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: songstats_track_id
+          in: query
+          type: string
+          description: Songstats track ID
+          required: true
+        - name: source
+          in: query
+          type: string
+          description: Streaming platform source filter
+        - name: start_date
+          in: query
+          type: string
+          description: Start date for historical data
+        - name: end_date
+          in: query
+          type: string
+          description: End date for historical data
+    - name: tracks-info
+      path: /tracks/info
+      operations:
+      - name: gettrackinfo
+        method: GET
+        description: Get Track Info
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: songstats_track_id
+          in: query
+          type: string
+          description: Songstats track ID
+        - name: isrc
+          in: query
+          type: string
+          description: International Standard Recording Code
+        - name: spotify_track_id
+          in: query
+          type: string
+          description: Spotify track ID
+    - name: tracks-link_request
+      path: /tracks/link_request
+      operations:
+      - name: addtracklinkrequest
+        method: POST
+        description: Add Track Link Request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: removetracklinkrequest
+        method: DELETE
+        description: Remove Track Link Request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: songstats_track_id
+          in: query
+          type: string
+          required: true
+        - name: link
+          in: query
+          type: string
+          required: true
+    - name: tracks-locations
+      path: /tracks/locations
+      operations:
+      - name: gettracklocations
+        method: GET
+        description: Get Track Locations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: songstats_track_id
+          in: query
+          type: string
+          description: Songstats track ID
+          required: true
+        - name: source
+          in: query
+          type: string
+          description: Streaming platform source filter
+    - name: tracks-search
+      path: /tracks/search
+      operations:
+      - name: searchtracks
+        method: GET
+        description: Search Tracks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: q
+          in: query
+          type: string
+          description: Search query
+          required: true
+    - name: tracks-stats
+      path: /tracks/stats
+      operations:
+      - name: gettrackcurrentstats
+        method: GET
+        description: Get Track Current Stats
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: songstats_track_id
+          in: query
+          type: string
+          description: Songstats track ID
+          required: true
+        - name: source
+          in: query
+          type: string
+          description: Streaming platform source filter
+    authentication:
+      type: apikey
+      key: apikey
+      value: '{{env.SONGSTATS_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: songstats-tracks-rest
+    port: 8080
+    description: REST adapter for Songstats Enterprise API — Tracks. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/tracks/activities
+      name: tracks-activities
+      description: REST surface for tracks-activities.
+      operations:
+      - method: GET
+        name: gettrackactivities
+        description: Get Track Activities
+        call: songstats-tracks.gettrackactivities
+        with:
+          songstats_track_id: rest.songstats_track_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tracks/historic-stats
+      name: tracks-historic-stats
+      description: REST surface for tracks-historic_stats.
+      operations:
+      - method: GET
+        name: gettrackhistoricstats
+        description: Get Track Historic Stats
+        call: songstats-tracks.gettrackhistoricstats
+        with:
+          songstats_track_id: rest.songstats_track_id
+          source: rest.source
+          start_date: rest.start_date
+          end_date: rest.end_date
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tracks/info
+      name: tracks-info
+      description: REST surface for tracks-info.
+      operations:
+      - method: GET
+        name: gettrackinfo
+        description: Get Track Info
+        call: songstats-tracks.gettrackinfo
+        with:
+          songstats_track_id: rest.songstats_track_id
+          isrc: rest.isrc
+          spotify_track_id: rest.spotify_track_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tracks/link-request
+      name: tracks-link-request
+      description: REST surface for tracks-link_request.
+      operations:
+      - method: POST
+        name: addtracklinkrequest
+        description: Add Track Link Request
+        call: songstats-tracks.addtracklinkrequest
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: removetracklinkrequest
+        description: Remove Track Link Request
+        call: songstats-tracks.removetracklinkrequest
+        with:
+          songstats_track_id: rest.songstats_track_id
+          link: rest.link
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tracks/locations
+      name: tracks-locations
+      description: REST surface for tracks-locations.
+      operations:
+      - method: GET
+        name: gettracklocations
+        description: Get Track Locations
+        call: songstats-tracks.gettracklocations
+        with:
+          songstats_track_id: rest.songstats_track_id
+          source: rest.source
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tracks/search
+      name: tracks-search
+      description: REST surface for tracks-search.
+      operations:
+      - method: GET
+        name: searchtracks
+        description: Search Tracks
+        call: songstats-tracks.searchtracks
+        with:
+          q: rest.q
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tracks/stats
+      name: tracks-stats
+      description: REST surface for tracks-stats.
+      operations:
+      - method: GET
+        name: gettrackcurrentstats
+        description: Get Track Current Stats
+        call: songstats-tracks.gettrackcurrentstats
+        with:
+          songstats_track_id: rest.songstats_track_id
+          source: rest.source
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: songstats-tracks-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Songstats Enterprise API — Tracks. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: get-track-activities
+      description: Get Track Activities
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: songstats-tracks.gettrackactivities
+      with:
+        songstats_track_id: tools.songstats_track_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-track-historic-stats
+      description: Get Track Historic Stats
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: songstats-tracks.gettrackhistoricstats
+      with:
+        songstats_track_id: tools.songstats_track_id
+        source: tools.source
+        start_date: tools.start_date
+        end_date: tools.end_date
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-track-info
+      description: Get Track Info
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: songstats-tracks.gettrackinfo
+      with:
+        songstats_track_id: tools.songstats_track_id
+        isrc: tools.isrc
+        spotify_track_id: tools.spotify_track_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: add-track-link-request
+      description: Add Track Link Request
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: songstats-tracks.addtracklinkrequest
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-track-link-request
+      description: Remove Track Link Request
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: songstats-tracks.removetracklinkrequest
+      with:
+        songstats_track_id: tools.songstats_track_id
+        link: tools.link
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-track-locations
+      description: Get Track Locations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: songstats-tracks.gettracklocations
+      with:
+        songstats_track_id: tools.songstats_track_id
+        source: tools.source
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: search-tracks
+      description: Search Tracks
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: songstats-tracks.searchtracks
+      with:
+        q: tools.q
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-track-current-stats
+      description: Get Track Current Stats
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: songstats-tracks.gettrackcurrentstats
+      with:
+        songstats_track_id: tools.songstats_track_id
+        source: tools.source
+      outputParameters:
+      - type: object
+        mapping: $.

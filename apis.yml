@@ -65,7 +65,7 @@ common:
     url: https://github.com/Songstats
   - type: Blog
     url: https://lab.songstats.com/
-  - type: SignUp
+  - type: Signup
     url: https://songstats.com/for/developers
 maintainers:
   - FN: Kin Lane

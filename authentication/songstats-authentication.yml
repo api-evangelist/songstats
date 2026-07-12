@@ -1,0 +1,17 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/songstats-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: apikey
+  description: API key from the Songstats Enterprise dashboard. Contact api@songstats.com for
+    access.
+  sources:
+  - openapi/songstats-openapi.yml

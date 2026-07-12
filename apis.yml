@@ -53,6 +53,10 @@ apis:
         email: api@songstats.com
         url: https://songstats.com/for/developers
 common:
+  - type: DomainSecurity
+    url: security/songstats-domain-security.yml
+  - type: Authentication
+    url: authentication/songstats-authentication.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/songstats
   - type: Portal

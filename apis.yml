@@ -53,6 +53,8 @@ apis:
         email: api@songstats.com
         url: https://songstats.com/for/developers
 common:
+  - type: AgenticAccess
+    url: agentic-access/songstats-agentic-access.yml
   - type: DomainSecurity
     url: security/songstats-domain-security.yml
   - type: Authentication

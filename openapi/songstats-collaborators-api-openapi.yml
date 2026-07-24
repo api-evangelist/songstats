@@ -1,0 +1,152 @@
+openapi: 3.0.3
+info:
+  title: Songstats Enterprise Artists Collaborators API
+  description: The Songstats Enterprise API provides music data analytics for artists, tracks, labels, and collaborators across all major streaming platforms. Endpoints return JSON data including current stats, historic stats, audience details, catalog, activities, and playlist data. Used by music industry professionals to build dashboards, reports, and data-driven tools.
+  version: 1.0.0
+  contact:
+    name: Songstats API Support
+    email: api@songstats.com
+    url: https://songstats.com/for/developers
+  termsOfService: https://songstats.com/terms
+servers:
+- url: https://api.songstats.com/enterprise/v1
+  description: Songstats Enterprise API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Collaborators
+paths:
+  /collaborators/info:
+    get:
+      operationId: getCollaboratorInfo
+      summary: Get Collaborator Info
+      description: Returns basic information about a music collaborator (producer, songwriter, etc.)
+      tags:
+      - Collaborators
+      parameters:
+      - name: songstats_collaborator_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Songstats collaborator ID
+      responses:
+        '200':
+          description: Collaborator information
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+  /collaborators/stats:
+    get:
+      operationId: getCollaboratorCurrentStats
+      summary: Get Collaborator Current Stats
+      description: Returns current statistics for a music collaborator
+      tags:
+      - Collaborators
+      parameters:
+      - name: songstats_collaborator_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Songstats collaborator ID
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Streaming platform source filter
+      responses:
+        '200':
+          description: Collaborator current stats
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+  /collaborators/catalog:
+    get:
+      operationId: getCollaboratorCatalog
+      summary: Get Collaborator Catalog
+      description: Returns the track catalog of a collaborator
+      tags:
+      - Collaborators
+      parameters:
+      - name: songstats_collaborator_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Songstats collaborator ID
+      responses:
+        '200':
+          description: Collaborator catalog
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+  /collaborators/search:
+    get:
+      operationId: searchCollaborators
+      summary: Search Collaborators
+      description: Search for music collaborators by name
+      tags:
+      - Collaborators
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Search query
+      responses:
+        '200':
+          description: Collaborator search results
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+  /collaborators/top_tracks:
+    get:
+      operationId: getCollaboratorTopTracks
+      summary: Get Collaborator Top Tracks
+      description: Returns top tracks for a collaborator
+      tags:
+      - Collaborators
+      parameters:
+      - name: songstats_collaborator_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Songstats collaborator ID
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Streaming platform source filter
+      responses:
+        '200':
+          description: Collaborator top tracks
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+      description: API key from the Songstats Enterprise dashboard. Contact api@songstats.com for access.

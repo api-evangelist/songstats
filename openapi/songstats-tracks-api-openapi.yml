@@ -1,0 +1,298 @@
+openapi: 3.0.3
+info:
+  title: Songstats Enterprise Artists Tracks API
+  description: The Songstats Enterprise API provides music data analytics for artists, tracks, labels, and collaborators across all major streaming platforms. Endpoints return JSON data including current stats, historic stats, audience details, catalog, activities, and playlist data. Used by music industry professionals to build dashboards, reports, and data-driven tools.
+  version: 1.0.0
+  contact:
+    name: Songstats API Support
+    email: api@songstats.com
+    url: https://songstats.com/for/developers
+  termsOfService: https://songstats.com/terms
+servers:
+- url: https://api.songstats.com/enterprise/v1
+  description: Songstats Enterprise API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Tracks
+paths:
+  /tracks/info:
+    get:
+      operationId: getTrackInfo
+      summary: Get Track Info
+      description: Returns basic information about a track
+      tags:
+      - Tracks
+      parameters:
+      - name: songstats_track_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Songstats track ID
+      - name: isrc
+        in: query
+        required: false
+        schema:
+          type: string
+        description: International Standard Recording Code
+      - name: spotify_track_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Spotify track ID
+      responses:
+        '200':
+          description: Track information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackInfo'
+        '401':
+          description: Unauthorized
+  /tracks/stats:
+    get:
+      operationId: getTrackCurrentStats
+      summary: Get Track Current Stats
+      description: Returns summary and detailed information of a track filtered by source
+      tags:
+      - Tracks
+      parameters:
+      - name: songstats_track_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Songstats track ID
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Streaming platform source filter
+      responses:
+        '200':
+          description: Track current stats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackStats'
+        '401':
+          description: Unauthorized
+  /tracks/historic_stats:
+    get:
+      operationId: getTrackHistoricStats
+      summary: Get Track Historic Stats
+      description: Returns historic information of a track filtered by source
+      tags:
+      - Tracks
+      parameters:
+      - name: songstats_track_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Songstats track ID
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Streaming platform source filter
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+        description: Start date for historical data
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+        description: End date for historical data
+      responses:
+        '200':
+          description: Track historic stats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrackStats'
+        '401':
+          description: Unauthorized
+  /tracks/search:
+    get:
+      operationId: searchTracks
+      summary: Search Tracks
+      description: Search for tracks by title or artist
+      tags:
+      - Tracks
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Search query
+      responses:
+        '200':
+          description: Track search results
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+  /tracks/activities:
+    get:
+      operationId: getTrackActivities
+      summary: Get Track Activities
+      description: Returns recent activities for a track
+      tags:
+      - Tracks
+      parameters:
+      - name: songstats_track_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Songstats track ID
+      responses:
+        '200':
+          description: Track activities
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+  /tracks/locations:
+    get:
+      operationId: getTrackLocations
+      summary: Get Track Locations
+      description: Returns geographic streaming location data for a track
+      tags:
+      - Tracks
+      parameters:
+      - name: songstats_track_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Songstats track ID
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Streaming platform source filter
+      responses:
+        '200':
+          description: Track location data
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+  /tracks/link_request:
+    post:
+      operationId: addTrackLinkRequest
+      summary: Add Track Link Request
+      description: Request a link to be added to a track
+      tags:
+      - Tracks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                songstats_track_id:
+                  type: string
+                link:
+                  type: string
+      responses:
+        '200':
+          description: Link request submitted
+        '401':
+          description: Unauthorized
+    delete:
+      operationId: removeTrackLinkRequest
+      summary: Remove Track Link Request
+      description: Request a link to be removed from a track
+      tags:
+      - Tracks
+      parameters:
+      - name: songstats_track_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: link
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Link removal request submitted
+        '401':
+          description: Unauthorized
+components:
+  schemas:
+    TrackStats:
+      type: object
+      description: Current statistics for a track across streaming platforms
+      properties:
+        songstats_track_id:
+          type: string
+        source:
+          type: string
+        streams:
+          type: integer
+        playlists_editorial_current:
+          type: integer
+        playlists_editorial_total:
+          type: integer
+        chart_position:
+          type: integer
+    TrackInfo:
+      type: object
+      description: Basic information about a music track
+      properties:
+        songstats_track_id:
+          type: string
+          description: Songstats internal track ID
+        title:
+          type: string
+          description: Track title
+        artists:
+          type: array
+          items:
+            type: string
+          description: Track artists
+        isrc:
+          type: string
+          description: International Standard Recording Code
+        genres:
+          type: array
+          items:
+            type: string
+          description: Track genres
+        release_date:
+          type: string
+          format: date
+          description: Track release date
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+      description: API key from the Songstats Enterprise dashboard. Contact api@songstats.com for access.

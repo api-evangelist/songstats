@@ -1,0 +1,88 @@
+openapi: 3.0.3
+info:
+  title: Songstats Enterprise Artists Info API
+  description: The Songstats Enterprise API provides music data analytics for artists, tracks, labels, and collaborators across all major streaming platforms. Endpoints return JSON data including current stats, historic stats, audience details, catalog, activities, and playlist data. Used by music industry professionals to build dashboards, reports, and data-driven tools.
+  version: 1.0.0
+  contact:
+    name: Songstats API Support
+    email: api@songstats.com
+    url: https://songstats.com/for/developers
+  termsOfService: https://songstats.com/terms
+servers:
+- url: https://api.songstats.com/enterprise/v1
+  description: Songstats Enterprise API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Info
+paths:
+  /info/sources:
+    get:
+      operationId: getInfoSources
+      summary: Get Available Sources
+      description: Returns list of available streaming platform sources
+      tags:
+      - Info
+      responses:
+        '200':
+          description: List of available sources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SourceInfo'
+        '401':
+          description: Unauthorized
+  /info/status:
+    get:
+      operationId: getInfoStatus
+      summary: Get API Status
+      description: Returns current API status
+      tags:
+      - Info
+      responses:
+        '200':
+          description: API status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+  /info/definitions:
+    get:
+      operationId: getInfoDefinitions
+      summary: Get Field Definitions
+      description: Returns definitions for all data fields returned by the API
+      tags:
+      - Info
+      responses:
+        '200':
+          description: Field definitions
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    StatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: API status
+    SourceInfo:
+      type: object
+      description: Available streaming platform sources
+      properties:
+        source:
+          type: string
+          description: Platform identifier
+        name:
+          type: string
+          description: Platform display name
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+      description: API key from the Songstats Enterprise dashboard. Contact api@songstats.com for access.

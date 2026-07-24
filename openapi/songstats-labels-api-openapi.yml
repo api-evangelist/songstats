@@ -1,0 +1,333 @@
+openapi: 3.0.3
+info:
+  title: Songstats Enterprise Artists Labels API
+  description: The Songstats Enterprise API provides music data analytics for artists, tracks, labels, and collaborators across all major streaming platforms. Endpoints return JSON data including current stats, historic stats, audience details, catalog, activities, and playlist data. Used by music industry professionals to build dashboards, reports, and data-driven tools.
+  version: 1.0.0
+  contact:
+    name: Songstats API Support
+    email: api@songstats.com
+    url: https://songstats.com/for/developers
+  termsOfService: https://songstats.com/terms
+servers:
+- url: https://api.songstats.com/enterprise/v1
+  description: Songstats Enterprise API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Labels
+paths:
+  /labels/info:
+    get:
+      operationId: getLabelInfo
+      summary: Get Label Info
+      description: Returns basic information about a record label
+      tags:
+      - Labels
+      parameters:
+      - name: songstats_label_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Songstats label ID
+      - name: label_name
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Label name search
+      responses:
+        '200':
+          description: Label information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelInfo'
+        '401':
+          description: Unauthorized
+  /labels/stats:
+    get:
+      operationId: getLabelCurrentStats
+      summary: Get Label Current Stats
+      description: Returns current statistics for a record label across streaming platforms
+      tags:
+      - Labels
+      parameters:
+      - name: songstats_label_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Songstats label ID
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Streaming platform source filter
+      responses:
+        '200':
+          description: Label current stats
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+  /labels/historic_stats:
+    get:
+      operationId: getLabelHistoricStats
+      summary: Get Label Historic Stats
+      description: Returns historical statistics for a record label
+      tags:
+      - Labels
+      parameters:
+      - name: songstats_label_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Songstats label ID
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Streaming platform source filter
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+        description: Start date
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+        description: End date
+      responses:
+        '200':
+          description: Label historic stats
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+  /labels/audience:
+    get:
+      operationId: getLabelAudience
+      summary: Get Label Audience
+      description: Returns audience data for a record label
+      tags:
+      - Labels
+      parameters:
+      - name: songstats_label_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Songstats label ID
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Streaming platform source filter
+      responses:
+        '200':
+          description: Label audience data
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+  /labels/catalog:
+    get:
+      operationId: getLabelCatalog
+      summary: Get Label Catalog
+      description: Returns the track catalog of a record label
+      tags:
+      - Labels
+      parameters:
+      - name: songstats_label_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Songstats label ID
+      responses:
+        '200':
+          description: Label catalog
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+  /labels/search:
+    get:
+      operationId: searchLabels
+      summary: Search Labels
+      description: Search for record labels by name
+      tags:
+      - Labels
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Search query
+      responses:
+        '200':
+          description: Label search results
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+  /labels/top_tracks:
+    get:
+      operationId: getLabelTopTracks
+      summary: Get Label Top Tracks
+      description: Returns top tracks for a record label
+      tags:
+      - Labels
+      parameters:
+      - name: songstats_label_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Songstats label ID
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Streaming platform source filter
+      responses:
+        '200':
+          description: Label top tracks
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+  /labels/track_request:
+    post:
+      operationId: addLabelTrackRequest
+      summary: Add Label Track Request
+      description: Request for a track to be added to a label catalog
+      tags:
+      - Labels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                songstats_label_id:
+                  type: string
+                songstats_track_id:
+                  type: string
+      responses:
+        '200':
+          description: Track request submitted
+        '401':
+          description: Unauthorized
+    delete:
+      operationId: removeLabelTrackRequest
+      summary: Remove Label Track Request
+      description: Request for a track to be removed from a label catalog
+      tags:
+      - Labels
+      parameters:
+      - name: songstats_label_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: songstats_track_id
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Track removal request submitted
+        '401':
+          description: Unauthorized
+  /labels/link_request:
+    post:
+      operationId: addLabelLinkRequest
+      summary: Add Label Link Request
+      description: Request a link to be added to a record label
+      tags:
+      - Labels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                songstats_label_id:
+                  type: string
+                link:
+                  type: string
+      responses:
+        '200':
+          description: Link request submitted
+        '401':
+          description: Unauthorized
+    delete:
+      operationId: removeLabelLinkRequest
+      summary: Remove Label Link Request
+      description: Request a link to be removed from a record label
+      tags:
+      - Labels
+      parameters:
+      - name: songstats_label_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: link
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Link removal request submitted
+        '401':
+          description: Unauthorized
+components:
+  schemas:
+    LabelInfo:
+      type: object
+      description: Basic information about a record label
+      properties:
+        songstats_label_id:
+          type: string
+        name:
+          type: string
+        genres:
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+      description: API key from the Songstats Enterprise dashboard. Contact api@songstats.com for access.

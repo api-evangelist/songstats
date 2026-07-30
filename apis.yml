@@ -6,9 +6,22 @@ description: >-
   tracks, record labels, and collaborators across all major streaming platforms including Spotify, Apple Music, Amazon
   Music, Deezer, TikTok, and more. Integrated with Radiostats for radio airplay data across 40,000+ stations.
 type: Index
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/songstats.png
 tags:
   - Analytics
   - Music
@@ -21,37 +34,91 @@ created: '2025-02-12'
 modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
-  - aid: songstats:songstats-enterprise-api
-    name: Songstats Enterprise API
-    description: >-
-      The Songstats Enterprise API (v1) provides music data analytics for artists, tracks, labels, and collaborators.
-      Endpoints return JSON data including current stats, historic stats, audience details, catalog information,
-      activities, top playlists, top tracks, and geographic location data across major streaming platforms.
-      Authentication uses an API key in the request header. Includes Radiostats integration for radio airplay data.
-    humanURL: https://docs.songstats.com/
-    baseURL: https://api.songstats.com/enterprise/v1
-    tags:
-      - Analytics
-      - Music
-      - Streaming
-      - Artists
-      - Tracks
-      - Labels
-      - Collaborators
-    properties:
-      - type: Documentation
-        url: https://docs.songstats.com/
-      - type: Reference
-        url: https://docs.songstats.com/docs/api/e80265bb8b01b-songstats-api
-      - type: OpenAPI
-        url: https://raw.githubusercontent.com/api-evangelist/songstats/refs/heads/main/openapi/songstats-openapi.yml
-      - type: JSONSchema
-        url: >-
-          https://raw.githubusercontent.com/api-evangelist/songstats/refs/heads/main/json-schema/songstats-artist-schema.json
-    contact:
-      - FN: Songstats API Support
-        email: api@songstats.com
-        url: https://songstats.com/for/developers
+- aid: songstats:songstats-artists-api
+  name: Songstats Artists API
+  description: The Artists API from Songstats — 12 operation(s) for artists.
+  humanURL: https://docs.songstats.com/
+  baseURL: https://api.songstats.com/enterprise/v1
+  tags:
+  - Artists
+  properties:
+  - type: OpenAPI
+    url: openapi/songstats-artists-api-openapi.yml
+  - type: Documentation
+    url: https://docs.songstats.com/
+  - type: Reference
+    url: https://docs.songstats.com/docs/api/e80265bb8b01b-songstats-api
+  - type: JSONSchema
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/songstats/refs/heads/main/json-schema/songstats-artist-schema.json
+- aid: songstats:songstats-collaborators-api
+  name: Songstats Collaborators API
+  description: The Collaborators API from Songstats — 5 operation(s) for collaborators.
+  humanURL: https://docs.songstats.com/
+  baseURL: https://api.songstats.com/enterprise/v1
+  tags:
+  - Collaborators
+  properties:
+  - type: OpenAPI
+    url: openapi/songstats-collaborators-api-openapi.yml
+  - type: Documentation
+    url: https://docs.songstats.com/
+  - type: Reference
+    url: https://docs.songstats.com/docs/api/e80265bb8b01b-songstats-api
+  - type: JSONSchema
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/songstats/refs/heads/main/json-schema/songstats-artist-schema.json
+- aid: songstats:songstats-info-api
+  name: Songstats Info API
+  description: The Info API from Songstats — 3 operation(s) for info.
+  humanURL: https://docs.songstats.com/
+  baseURL: https://api.songstats.com/enterprise/v1
+  tags:
+  - Info
+  properties:
+  - type: OpenAPI
+    url: openapi/songstats-info-api-openapi.yml
+  - type: Documentation
+    url: https://docs.songstats.com/
+  - type: Reference
+    url: https://docs.songstats.com/docs/api/e80265bb8b01b-songstats-api
+  - type: JSONSchema
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/songstats/refs/heads/main/json-schema/songstats-artist-schema.json
+- aid: songstats:songstats-labels-api
+  name: Songstats Labels API
+  description: The Labels API from Songstats — 9 operation(s) for labels.
+  humanURL: https://docs.songstats.com/
+  baseURL: https://api.songstats.com/enterprise/v1
+  tags:
+  - Labels
+  properties:
+  - type: OpenAPI
+    url: openapi/songstats-labels-api-openapi.yml
+  - type: Documentation
+    url: https://docs.songstats.com/
+  - type: Reference
+    url: https://docs.songstats.com/docs/api/e80265bb8b01b-songstats-api
+  - type: JSONSchema
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/songstats/refs/heads/main/json-schema/songstats-artist-schema.json
+- aid: songstats:songstats-tracks-api
+  name: Songstats Tracks API
+  description: The Tracks API from Songstats — 7 operation(s) for tracks.
+  humanURL: https://docs.songstats.com/
+  baseURL: https://api.songstats.com/enterprise/v1
+  tags:
+  - Tracks
+  properties:
+  - type: OpenAPI
+    url: openapi/songstats-tracks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.songstats.com/
+  - type: Reference
+    url: https://docs.songstats.com/docs/api/e80265bb8b01b-songstats-api
+  - type: JSONSchema
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/songstats/refs/heads/main/json-schema/songstats-artist-schema.json
 common:
   - type: AgenticAccess
     url: agentic-access/songstats-agentic-access.yml

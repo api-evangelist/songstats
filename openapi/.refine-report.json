@@ -1,0 +1,22 @@
+{
+  "provider": "songstats",
+  "sources": [
+    "songstats-artists-api-openapi.yml",
+    "songstats-collaborators-api-openapi.yml",
+    "songstats-info-api-openapi.yml",
+    "songstats-labels-api-openapi.yml",
+    "songstats-tracks-api-openapi.yml"
+  ],
+  "outputs": [
+    "songstats-artists-api-openapi.yml",
+    "songstats-collaborators-api-openapi.yml",
+    "songstats-info-api-openapi.yml",
+    "songstats-labels-api-openapi.yml",
+    "songstats-tracks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

@@ -1,0 +1,220 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Songstats Enterprise Artists Tracks API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tracks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Track Info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/tracks/info",
+            "params": [
+              {
+                "name": "songstats_track_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats track ID"
+              },
+              {
+                "name": "isrc",
+                "value": "",
+                "type": "query",
+                "description": "International Standard Recording Code"
+              },
+              {
+                "name": "spotify_track_id",
+                "value": "",
+                "type": "query",
+                "description": "Spotify track ID"
+              }
+            ]
+          },
+          "docs": "Returns basic information about a track"
+        },
+        {
+          "info": {
+            "name": "Get Track Current Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/tracks/stats",
+            "params": [
+              {
+                "name": "songstats_track_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats track ID"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Streaming platform source filter"
+              }
+            ]
+          },
+          "docs": "Returns summary and detailed information of a track filtered by source"
+        },
+        {
+          "info": {
+            "name": "Get Track Historic Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/tracks/historic_stats",
+            "params": [
+              {
+                "name": "songstats_track_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats track ID"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Streaming platform source filter"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Start date for historical data"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "End date for historical data"
+              }
+            ]
+          },
+          "docs": "Returns historic information of a track filtered by source"
+        },
+        {
+          "info": {
+            "name": "Search Tracks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/tracks/search",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Search query"
+              }
+            ]
+          },
+          "docs": "Search for tracks by title or artist"
+        },
+        {
+          "info": {
+            "name": "Get Track Activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/tracks/activities",
+            "params": [
+              {
+                "name": "songstats_track_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats track ID"
+              }
+            ]
+          },
+          "docs": "Returns recent activities for a track"
+        },
+        {
+          "info": {
+            "name": "Get Track Locations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/tracks/locations",
+            "params": [
+              {
+                "name": "songstats_track_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats track ID"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Streaming platform source filter"
+              }
+            ]
+          },
+          "docs": "Returns geographic streaming location data for a track"
+        },
+        {
+          "info": {
+            "name": "Add Track Link Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.songstats.com/enterprise/v1/tracks/link_request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request a link to be added to a track"
+        },
+        {
+          "info": {
+            "name": "Remove Track Link Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.songstats.com/enterprise/v1/tracks/link_request",
+            "params": [
+              {
+                "name": "songstats_track_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "link",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Request a link to be removed from a track"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

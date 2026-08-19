@@ -1,0 +1,133 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Songstats Enterprise Artists Collaborators API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Collaborators",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Collaborator Info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/collaborators/info",
+            "params": [
+              {
+                "name": "songstats_collaborator_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats collaborator ID"
+              }
+            ]
+          },
+          "docs": "Returns basic information about a music collaborator (producer, songwriter, etc.)"
+        },
+        {
+          "info": {
+            "name": "Get Collaborator Current Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/collaborators/stats",
+            "params": [
+              {
+                "name": "songstats_collaborator_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats collaborator ID"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Streaming platform source filter"
+              }
+            ]
+          },
+          "docs": "Returns current statistics for a music collaborator"
+        },
+        {
+          "info": {
+            "name": "Get Collaborator Catalog",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/collaborators/catalog",
+            "params": [
+              {
+                "name": "songstats_collaborator_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats collaborator ID"
+              }
+            ]
+          },
+          "docs": "Returns the track catalog of a collaborator"
+        },
+        {
+          "info": {
+            "name": "Search Collaborators",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/collaborators/search",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Search query"
+              }
+            ]
+          },
+          "docs": "Search for music collaborators by name"
+        },
+        {
+          "info": {
+            "name": "Get Collaborator Top Tracks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/collaborators/top_tracks",
+            "params": [
+              {
+                "name": "songstats_collaborator_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats collaborator ID"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Streaming platform source filter"
+              }
+            ]
+          },
+          "docs": "Returns top tracks for a collaborator"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

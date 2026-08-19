@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Songstats Enterprise Artists Info API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Info",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Available Sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/info/sources"
+          },
+          "docs": "Returns list of available streaming platform sources"
+        },
+        {
+          "info": {
+            "name": "Get API Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/info/status"
+          },
+          "docs": "Returns current API status"
+        },
+        {
+          "info": {
+            "name": "Get Field Definitions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/info/definitions"
+          },
+          "docs": "Returns definitions for all data fields returned by the API"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,277 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Songstats Enterprise Artists Labels API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Labels",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Label Info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/labels/info",
+            "params": [
+              {
+                "name": "songstats_label_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats label ID"
+              },
+              {
+                "name": "label_name",
+                "value": "",
+                "type": "query",
+                "description": "Label name search"
+              }
+            ]
+          },
+          "docs": "Returns basic information about a record label"
+        },
+        {
+          "info": {
+            "name": "Get Label Current Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/labels/stats",
+            "params": [
+              {
+                "name": "songstats_label_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats label ID"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Streaming platform source filter"
+              }
+            ]
+          },
+          "docs": "Returns current statistics for a record label across streaming platforms"
+        },
+        {
+          "info": {
+            "name": "Get Label Historic Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/labels/historic_stats",
+            "params": [
+              {
+                "name": "songstats_label_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats label ID"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Streaming platform source filter"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Start date"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "End date"
+              }
+            ]
+          },
+          "docs": "Returns historical statistics for a record label"
+        },
+        {
+          "info": {
+            "name": "Get Label Audience",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/labels/audience",
+            "params": [
+              {
+                "name": "songstats_label_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats label ID"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Streaming platform source filter"
+              }
+            ]
+          },
+          "docs": "Returns audience data for a record label"
+        },
+        {
+          "info": {
+            "name": "Get Label Catalog",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/labels/catalog",
+            "params": [
+              {
+                "name": "songstats_label_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats label ID"
+              }
+            ]
+          },
+          "docs": "Returns the track catalog of a record label"
+        },
+        {
+          "info": {
+            "name": "Search Labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/labels/search",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Search query"
+              }
+            ]
+          },
+          "docs": "Search for record labels by name"
+        },
+        {
+          "info": {
+            "name": "Get Label Top Tracks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.songstats.com/enterprise/v1/labels/top_tracks",
+            "params": [
+              {
+                "name": "songstats_label_id",
+                "value": "",
+                "type": "query",
+                "description": "Songstats label ID"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Streaming platform source filter"
+              }
+            ]
+          },
+          "docs": "Returns top tracks for a record label"
+        },
+        {
+          "info": {
+            "name": "Add Label Track Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.songstats.com/enterprise/v1/labels/track_request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request for a track to be added to a label catalog"
+        },
+        {
+          "info": {
+            "name": "Remove Label Track Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.songstats.com/enterprise/v1/labels/track_request",
+            "params": [
+              {
+                "name": "songstats_label_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "songstats_track_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Request for a track to be removed from a label catalog"
+        },
+        {
+          "info": {
+            "name": "Add Label Link Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.songstats.com/enterprise/v1/labels/link_request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request a link to be added to a record label"
+        },
+        {
+          "info": {
+            "name": "Remove Label Link Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.songstats.com/enterprise/v1/labels/link_request",
+            "params": [
+              {
+                "name": "songstats_label_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "link",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Request a link to be removed from a record label"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

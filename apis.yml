@@ -6,6 +6,18 @@ description: >-
   tracks, record labels, and collaborators across all major streaming platforms including Spotify, Apple Music, Amazon
   Music, Deezer, TikTok, and more. Integrated with Radiostats for radio airplay data across 40,000+ stations.
 type: Index
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve

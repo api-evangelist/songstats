@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Songstats Enterprise Artists Tracks API
+  title: Songstats Enterprise Tracks API
   description: The Songstats Enterprise API provides music data analytics for artists, tracks, labels, and collaborators across all major streaming platforms. Endpoints return JSON data including current stats, historic stats, audience details, catalog, activities, and playlist data. Used by music industry professionals to build dashboards, reports, and data-driven tools.
   version: 1.0.0
   contact:
@@ -247,22 +247,6 @@ paths:
           description: Unauthorized
 components:
   schemas:
-    TrackStats:
-      type: object
-      description: Current statistics for a track across streaming platforms
-      properties:
-        songstats_track_id:
-          type: string
-        source:
-          type: string
-        streams:
-          type: integer
-        playlists_editorial_current:
-          type: integer
-        playlists_editorial_total:
-          type: integer
-        chart_position:
-          type: integer
     TrackInfo:
       type: object
       description: Basic information about a music track
@@ -290,6 +274,22 @@ components:
           type: string
           format: date
           description: Track release date
+    TrackStats:
+      type: object
+      description: Current statistics for a track across streaming platforms
+      properties:
+        songstats_track_id:
+          type: string
+        source:
+          type: string
+        streams:
+          type: integer
+        playlists_editorial_current:
+          type: integer
+        playlists_editorial_total:
+          type: integer
+        chart_position:
+          type: integer
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

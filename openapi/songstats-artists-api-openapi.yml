@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Songstats Enterprise Artists API
   description: The Songstats Enterprise API provides music data analytics for artists, tracks, labels, and collaborators across all major streaming platforms. Endpoints return JSON data including current stats, historic stats, audience details, catalog, activities, and playlist data. Used by music industry professionals to build dashboards, reports, and data-driven tools.
@@ -408,27 +408,6 @@ paths:
           description: Unauthorized
 components:
   schemas:
-    ArtistInfo:
-      type: object
-      description: Basic information about a music artist
-      properties:
-        songstats_artist_id:
-          type: string
-          description: Songstats internal artist ID
-        name:
-          type: string
-          description: Artist name
-        genres:
-          type: array
-          items:
-            type: string
-          description: Associated genres
-        links:
-          type: object
-          description: Platform links for the artist
-        image_url:
-          type: string
-          description: Artist image URL
     ArtistStats:
       type: object
       description: Current statistics for an artist across streaming platforms
@@ -450,6 +429,27 @@ components:
         playlists_editorial_total:
           type: integer
           description: Total editorial playlist placements ever
+    ArtistInfo:
+      type: object
+      description: Basic information about a music artist
+      properties:
+        songstats_artist_id:
+          type: string
+          description: Songstats internal artist ID
+        name:
+          type: string
+          description: Artist name
+        genres:
+          type: array
+          items:
+            type: string
+          description: Associated genres
+        links:
+          type: object
+          description: Platform links for the artist
+        image_url:
+          type: string
+          description: Artist image URL
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

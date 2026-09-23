@@ -1,11 +1,7 @@
 {
   "provider": "songstats",
   "sources": [
-    "songstats-artists-api-openapi.yml",
-    "songstats-collaborators-api-openapi.yml",
-    "songstats-info-api-openapi.yml",
-    "songstats-labels-api-openapi.yml",
-    "songstats-tracks-api-openapi.yml"
+    "_original/songstats-openapi.yml"
   ],
   "outputs": [
     "songstats-artists-api-openapi.yml",
@@ -17,6 +13,21 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "songstats-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "songstats-openapi.yml: declared missing tag: Artists",
+    "songstats-openapi.yml: declared missing tag: Collaborators",
+    "songstats-openapi.yml: declared missing tag: Info",
+    "songstats-openapi.yml: declared missing tag: Labels",
+    "songstats-openapi.yml: declared missing tag: Tracks",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "songstats-artists-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "songstats-collaborators-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "songstats-info-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "songstats-labels-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "songstats-tracks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

@@ -64,12 +64,6 @@ paths:
                 type: object
 components:
   schemas:
-    StatusResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          description: API status
     SourceInfo:
       type: object
       description: Available streaming platform sources
@@ -80,6 +74,12 @@ components:
         name:
           type: string
           description: Platform display name
+    StatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: API status
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -408,27 +408,6 @@ paths:
           description: Unauthorized
 components:
   schemas:
-    ArtistStats:
-      type: object
-      description: Current statistics for an artist across streaming platforms
-      properties:
-        songstats_artist_id:
-          type: string
-        source:
-          type: string
-          description: Streaming platform source (spotify, apple_music, deezer, etc.)
-        followers:
-          type: integer
-          description: Follower count
-        monthly_listeners:
-          type: integer
-          description: Monthly listener count
-        playlists_editorial_current:
-          type: integer
-          description: Current editorial playlist count
-        playlists_editorial_total:
-          type: integer
-          description: Total editorial playlist placements ever
     ArtistInfo:
       type: object
       description: Basic information about a music artist
@@ -450,6 +429,27 @@ components:
         image_url:
           type: string
           description: Artist image URL
+    ArtistStats:
+      type: object
+      description: Current statistics for an artist across streaming platforms
+      properties:
+        songstats_artist_id:
+          type: string
+        source:
+          type: string
+          description: Streaming platform source (spotify, apple_music, deezer, etc.)
+        followers:
+          type: integer
+          description: Follower count
+        monthly_listeners:
+          type: integer
+          description: Monthly listener count
+        playlists_editorial_current:
+          type: integer
+          description: Current editorial playlist count
+        playlists_editorial_total:
+          type: integer
+          description: Total editorial playlist placements ever
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

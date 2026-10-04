@@ -247,6 +247,22 @@ paths:
           description: Unauthorized
 components:
   schemas:
+    TrackStats:
+      type: object
+      description: Current statistics for a track across streaming platforms
+      properties:
+        songstats_track_id:
+          type: string
+        source:
+          type: string
+        streams:
+          type: integer
+        playlists_editorial_current:
+          type: integer
+        playlists_editorial_total:
+          type: integer
+        chart_position:
+          type: integer
     TrackInfo:
       type: object
       description: Basic information about a music track
@@ -274,22 +290,6 @@ components:
           type: string
           format: date
           description: Track release date
-    TrackStats:
-      type: object
-      description: Current statistics for a track across streaming platforms
-      properties:
-        songstats_track_id:
-          type: string
-        source:
-          type: string
-        streams:
-          type: integer
-        playlists_editorial_current:
-          type: integer
-        playlists_editorial_total:
-          type: integer
-        chart_position:
-          type: integer
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
